@@ -3,7 +3,7 @@
 A modern GUI tool for editing in-game memory values in **Far Far West** — no Cheat Engine knowledge required.
 
 [![Website](https://img.shields.io/badge/Website-Visit-blue?style=for-the-badge)](https://jlaiii.github.io/far-far-west-memory-editor/)
-[![Download](https://img.shields.io/badge/Download-Latest-green?style=for-the-badge)](https://github.com/jlaiii/far-far-west-memory-editor/releases/latest)
+[![Download](https://img.shields.io/badge/Download-ZIP-green?style=for-the-badge)](https://github.com/jlaiii/far-far-west-memory-editor/archive/refs/heads/main.zip)
 
 ---
 
@@ -24,7 +24,7 @@ A modern GUI tool for editing in-game memory values in **Far Far West** — no C
 
 ### Portable (Recommended)
 
-1. Download the latest release from [Releases](https://github.com/jlaiii/far-far-west-memory-editor/releases/latest)
+1. [Download the ZIP](https://github.com/jlaiii/far-far-west-memory-editor/archive/refs/heads/main.zip) of the latest version
 2. Extract to any folder
 3. Double-click `run.vbs` (or `editor.pyw`)
 4. Launch Far Far West — the editor connects automatically
