@@ -239,52 +239,52 @@ class PointerCard(ctk.CTkFrame):
         row.pack(fill="x", padx=4, pady=2)
 
         ctk.CTkLabel(
-            row, text=self.name, font=ctk.CTkFont(size=12, weight="bold"), width=52,
-        ).pack(side="left", padx=(0, 4))
+            row, text=self.name, font=ctk.CTkFont(size=14, weight="bold"), width=60,
+        ).pack(side="left", padx=(0, 6))
 
         self.value_label = ctk.CTkLabel(
-            row, text="--", font=ctk.CTkFont(size=16, weight="bold"), width=80,
+            row, text="--", font=ctk.CTkFont(size=20, weight="bold"), width=100,
             text_color=("#2B7A4B", "#4ADE80"), anchor="w",
         )
-        self.value_label.pack(side="left", padx=(0, 4))
+        self.value_label.pack(side="left", padx=(0, 6))
 
         self.entry_var = ctk.StringVar()
         self.entry = ctk.CTkEntry(
-            row, textvariable=self.entry_var, height=28, width=100,
-            placeholder_text="amount...", font=ctk.CTkFont(size=11),
+            row, textvariable=self.entry_var, height=32, width=120,
+            placeholder_text="amount...", font=ctk.CTkFont(size=13),
         )
-        self.entry.pack(side="left", padx=(0, 3))
+        self.entry.pack(side="left", padx=(0, 4))
         self.entry.bind("<Return>", lambda _e: self.set_value())
 
         self.set_btn = ctk.CTkButton(
-            row, text="Set", width=38, height=28, font=ctk.CTkFont(size=11),
+            row, text="Set", width=50, height=32, font=ctk.CTkFont(size=13),
             command=self.set_value,
         )
-        self.set_btn.pack(side="left", padx=(0, 3))
+        self.set_btn.pack(side="left", padx=(0, 4))
 
         self.freeze_btn = ctk.CTkButton(
-            row, text="❄", width=30, height=28, font=ctk.CTkFont(size=13),
+            row, text="Freeze", width=56, height=32, font=ctk.CTkFont(size=12),
             fg_color="transparent", border_width=1,
             command=self.toggle_freeze,
         )
         self.freeze_btn.pack(side="left")
 
-        # Preset row — compact
+        # Preset row
         presets = self.cfg.get("presets", [])
         if presets:
             preset_row = ctk.CTkFrame(self, fg_color="transparent")
-            preset_row.pack(fill="x", padx=4, pady=(0, 2))
+            preset_row.pack(fill="x", padx=4, pady=(2, 2))
             for i, amount in enumerate(presets):
                 label = self._fmt_preset(amount)
                 btn = ctk.CTkButton(
-                    preset_row, text=label, height=22, width=0,
-                    font=ctk.CTkFont(size=10),
+                    preset_row, text=label, height=26, width=0,
+                    font=ctk.CTkFont(size=12),
                     fg_color=("gray85", "gray25"),
                     text_color=("gray25", "gray85"),
                     hover_color=("#2B7A4B", "#4ADE80"),
                     command=lambda a=amount: self._apply_preset(a),
                 )
-                btn.pack(side="left", padx=(0 if i == 0 else 2, 0), pady=1)
+                btn.pack(side="left", padx=(0 if i == 0 else 3, 0), pady=2)
 
     @staticmethod
     def _fmt_preset(n: int) -> str:
@@ -422,7 +422,7 @@ class PointerCard(ctk.CTkFrame):
 
         self._freeze_active = True
         self._freeze_event.clear()
-        self.freeze_btn.configure(text="🔒", fg_color=("#E53E3E", "#C53030"))
+        self.freeze_btn.configure(text="Unfreeze", fg_color=("#E53E3E", "#C53030"))
         self.engine._emit(f"--- [{self.name}] Freeze ON (value={self._freeze_value}) ---")
         self._freeze_thread = threading.Thread(target=self._freeze_loop, daemon=True)
         self._freeze_thread.start()
@@ -430,7 +430,7 @@ class PointerCard(ctk.CTkFrame):
     def _stop_freeze(self) -> None:
         self._freeze_active = False
         self._freeze_event.set()
-        self.freeze_btn.configure(text="❄", fg_color="transparent")
+        self.freeze_btn.configure(text="Freeze", fg_color="transparent")
         self.engine._emit(f"--- [{self.name}] Freeze OFF ---")
 
     def _freeze_loop(self) -> None:
@@ -465,8 +465,8 @@ class MemoryEditorApp(ctk.CTk):
 
         self.config = config
         self.title(f"{config['game'].get('window_title', 'Memory Editor')} - Memory Editor")
-        self.geometry("460x310")
-        self.minsize(380, 220)
+        self.geometry("540x360")
+        self.minsize(420, 280)
 
         self.protocol("WM_DELETE_WINDOW", self._on_close)
 
@@ -493,18 +493,18 @@ class MemoryEditorApp(ctk.CTk):
         top.pack(fill="x", padx=6, pady=(6, 2))
 
         self.status_indicator = ctk.CTkLabel(
-            top, text="⏳", font=ctk.CTkFont(size=14),
+            top, text="⏳", font=ctk.CTkFont(size=16),
         )
-        self.status_indicator.pack(side="left", padx=(8, 3))
+        self.status_indicator.pack(side="left", padx=(8, 4))
 
         self.status_label = ctk.CTkLabel(
-            top, text="Looking for game...", font=ctk.CTkFont(size=11),
+            top, text="Looking for game...", font=ctk.CTkFont(size=13),
             text_color=("#D69E2E", "#F6E05E"),
         )
         self.status_label.pack(side="left")
 
         self.process_info = ctk.CTkLabel(
-            top, text="", font=ctk.CTkFont(size=10),
+            top, text="", font=ctk.CTkFont(size=12),
             text_color=("gray50", "gray50"),
         )
         self.process_info.pack(side="left", padx=10)
@@ -515,12 +515,12 @@ class MemoryEditorApp(ctk.CTk):
 
         ctk.CTkLabel(
             author_frame, text="Made by jlaiii",
-            font=ctk.CTkFont(size=10), text_color=("gray50", "gray50"),
+            font=ctk.CTkFont(size=12), text_color=("gray50", "gray50"),
         ).pack(side="left")
 
         gh_link = ctk.CTkLabel(
             author_frame, text="github.com/jlaiii/far-far-west-memory-editor",
-            font=ctk.CTkFont(size=10, underline=True),
+            font=ctk.CTkFont(size=12, underline=True),
             text_color=("#3B82F6", "#60A5FA"), cursor="hand2",
         )
         gh_link.pack(side="right")
@@ -542,25 +542,25 @@ class MemoryEditorApp(ctk.CTk):
         self.waiting_label = ctk.CTkLabel(
             self.waiting_frame,
             text="Waiting for game to start...",
-            font=ctk.CTkFont(size=12, weight="bold"),
+            font=ctk.CTkFont(size=16, weight="bold"),
             text_color=("gray50", "gray60"),
         )
-        self.waiting_label.pack(pady=(12, 2))
+        self.waiting_label.pack(pady=(16, 4))
 
         self.waiting_sub = ctk.CTkLabel(
             self.waiting_frame,
             text=f"Launch {self.config['game'].get('window_title', 'the game')} to auto-connect.",
-            font=ctk.CTkFont(size=11),
+            font=ctk.CTkFont(size=13),
             text_color=("gray55", "gray55"),
         )
         self.waiting_sub.pack()
 
         self.waiting_dots = ctk.CTkLabel(
             self.waiting_frame, text="",
-            font=ctk.CTkFont(size=12),
+            font=ctk.CTkFont(size=15),
             text_color=("gray50", "gray60"),
         )
-        self.waiting_dots.pack(pady=(4, 8))
+        self.waiting_dots.pack(pady=(6, 12))
 
         # Card area
         self.card_area = ctk.CTkScrollableFrame(self.main_tab, fg_color="transparent")
@@ -575,7 +575,7 @@ class MemoryEditorApp(ctk.CTk):
 
         # -- Log tab content --
         self.log_text = ctk.CTkTextbox(
-            self.log_tab, font=ctk.CTkFont(size=10), wrap="word",
+            self.log_tab, font=ctk.CTkFont(size=12), wrap="word",
         )
         self.log_text.pack(fill="both", expand=True, padx=2, pady=2)
 
