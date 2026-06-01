@@ -513,19 +513,14 @@ class MemoryEditorApp(ctk.CTk):
         author_frame = ctk.CTkFrame(self, corner_radius=0, fg_color="transparent")
         author_frame.pack(fill="x", padx=16, pady=(4, 0))
 
-        ctk.CTkLabel(
+        author_link = ctk.CTkLabel(
             author_frame, text="Made by jlaiii",
-            font=ctk.CTkFont(size=12), text_color=("gray50", "gray50"),
-        ).pack(side="left")
-
-        gh_link = ctk.CTkLabel(
-            author_frame, text="github.com/jlaiii/far-far-west-memory-editor",
             font=ctk.CTkFont(size=12, underline=True),
             text_color=("#3B82F6", "#60A5FA"), cursor="hand2",
         )
-        gh_link.pack(side="right")
-        gh_link.bind("<Button-1>", lambda _e: webbrowser.open(
-            "https://github.com/jlaiii/far-far-west-memory-editor"
+        author_link.pack(side="left")
+        author_link.bind("<Button-1>", lambda _e: webbrowser.open(
+            "https://jlaiii.github.io/far-far-west-memory-editor/"
         ))
 
         # -- Tab view --
