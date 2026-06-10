@@ -1,9 +1,9 @@
 @echo off
 setlocal enabledelayedexpansion
-title Far Far West - Gold Editor Launcher
+title Far Far West - Gold & Soul Editor
 
 :: ---------------------------------------------------------------------------
-::  Far Far West Gold Editor - Smart Launcher
+::  Far Far West Gold & Soul Editor - Smart Launcher
 ::  Checks Python, installs dependencies, launches the editor.
 ::  Double-click this file to run.
 :: ---------------------------------------------------------------------------
@@ -13,7 +13,7 @@ set "REQUIRED_PKGS=pymem customtkinter psutil"
 
 echo.
 echo  ============================================
-echo    Far Far West - Gold Editor
+echo    Far Far West - Gold & Soul Editor
 echo  ============================================
 echo.
 
@@ -160,21 +160,39 @@ exit /b 1
 echo.
 echo  Checking required packages...
 
+:: First, make sure pip itself is available (some venvs don't have it)
+!PYTHON! -m pip --version >nul 2>&1
+if !errorlevel! neq 0 (
+    echo    pip not found - bootstrapping with ensurepip...
+    !PYTHON! -m ensurepip --upgrade >nul 2>&1
+    if !errorlevel! neq 0 (
+        echo.
+        echo  [!!] Failed to bootstrap pip. Your Python installation may be broken.
+        echo  Try installing Python from https://www.python.org/downloads/
+        pause
+        exit /b 1
+    )
+    echo    [OK] pip bootstrapped
+)
+
 for %%p in (%REQUIRED_PKGS%) do (
     echo    Checking %%p...
     !PYTHON! -c "import %%p" 2>nul
     if !errorlevel! neq 0 (
         echo    Installing %%p...
-        !PYTHON! -m pip install %%p --quiet --disable-pip-version-check 2>nul
+        !PYTHON! -m pip install %%p --quiet --disable-pip-version-check
         if !errorlevel! neq 0 (
-            echo    [!] Failed to install %%p. Trying with --user...
-            !PYTHON! -m pip install %%p --user --quiet --disable-pip-version-check 2>nul
+            echo    [!] System install failed. Trying with --user...
+            !PYTHON! -m pip install %%p --user --quiet --disable-pip-version-check
         )
         !PYTHON! -c "import %%p" 2>nul
         if !errorlevel! neq 0 (
             echo.
             echo  [!!] Could not install %%p.
             echo  Please check your internet connection and try again.
+            echo.
+            echo  You can also try manually:
+            echo    !PYTHON! -m pip install %%p
             pause
             exit /b 1
         )
@@ -188,16 +206,17 @@ for %%p in (%REQUIRED_PKGS%) do (
 
 echo.
 echo  ============================================
-echo    Starting Gold Editor...
+echo    Starting Gold & Soul Editor...
 echo    If the game is not running, the editor
 echo    will wait and auto-attach when detected.
 echo  ============================================
 echo.
 
-:: Launch with pythonw to hide the console window
-start "" !PYTHON!w "%~dp0editor.pyw" 2>nul
-if %errorlevel% neq 0 (
-    :: pythonw might not exist; fall back to python
+:: Try pythonw first (no console window), fall back to python
+where !PYTHON!w >nul 2>&1
+if !errorlevel! equ 0 (
+    start "" !PYTHON!w "%~dp0editor.pyw"
+) else (
     start "" !PYTHON! "%~dp0editor.pyw"
 )
 
